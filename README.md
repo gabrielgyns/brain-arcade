@@ -16,6 +16,10 @@ npm run build      # typecheck + build de produção em dist/
 Site estático — qualquer CDN serve. `vercel.json` e `public/_redirects` (Netlify/Cloudflare Pages)
 reencaminham todas as rotas para `index.html`.
 
+## Design
+
+A direção visual ("Banca colorida"), os tokens, os temas claro/escuro e as regras de movimento e acessibilidade estão em [`DESIGN.md`](DESIGN.md).
+
 ## Arquitetura
 
 O código está organizado de dentro para fora: um **domínio** puro em TypeScript, sem React nem browser,

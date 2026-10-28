@@ -13,7 +13,7 @@ export function GamesPage() {
       <p className="muted">Escolha um jogo e comece já. Partidas ilimitadas em quatro níveis de dificuldade.</p>
       <div className="card-grid">
         {GAME_IDS.map((g) => (
-          <Link key={g} to={`/jogos/${messages.games[g].slug}`} className="game-card">
+          <Link key={g} to={`/jogos/${messages.games[g].slug}`} className="game-card" data-game={g}>
             <span className="game-icon" aria-hidden>{GAME_ICONS[g]}</span>
             <strong>{messages.games[g].name}</strong>
             <span className="muted">{messages.games[g].tagline}</span>

@@ -30,7 +30,7 @@ export function DailyHubPage() {
         {challenge.specs.map((spec) => {
           const done = dailyResult(progress, today, spec.game);
           return (
-            <Link key={spec.game} to={`/diario/${messages.games[spec.game].slug}`} className={`daily-item ${done?.solved ? "done" : done ? "seen" : ""}`}>
+            <Link key={spec.game} data-game={spec.game} to={`/diario/${messages.games[spec.game].slug}`} className={`daily-item ${done?.solved ? "done" : done ? "seen" : ""}`}>
               <span className="game-icon" aria-hidden>{GAME_ICONS[spec.game]}</span>
               <span>
                 <strong>{messages.games[spec.game].name} do dia</strong>

@@ -7,6 +7,7 @@ import { messages } from "../../i18n/messages";
 import { shareText, whatsappUrl } from "../../infra/share";
 import { track } from "../../infra/analytics";
 import { useApp } from "../../app/store";
+import { Confetti } from "./Confetti";
 
 const VERDICT_TEXT = {
   won: "Venceu o desafio! 🏆",
@@ -14,7 +15,18 @@ const VERDICT_TEXT = {
   tie: "Empate perfeito! 🤝",
 } as const;
 
-export function ResultPanel({ result, mode, onPlayAgain }: { result: PlayResult; mode: PlayMode; onPlayAgain?(): void }) {
+export function ResultPanel({
+  result,
+  mode,
+  onPlayAgain,
+  celebrate = true,
+}: {
+  result: PlayResult;
+  mode: PlayMode;
+  onPlayAgain?(): void;
+  /** False when re-showing a result from an earlier visit. */
+  celebrate?: boolean;
+}) {
   const { settings, updateSettings } = useApp();
   const [feedback, setFeedback] = useState<string | null>(null);
   const game = messages.games[result.spec.game];
@@ -48,7 +60,8 @@ export function ResultPanel({ result, mode, onPlayAgain }: { result: PlayResult;
   const verdict = mode.kind === "challenge" && result.solved ? compareToChallenge(mode.challenge, result.timeMs, result.mistakes) : null;
 
   return (
-    <section className="result-panel" aria-live="polite">
+    <section className={`result-panel ${result.solved ? "solved" : ""}`} aria-live="polite">
+      {celebrate && result.solved && <Confetti />}
       <h2>{result.solved ? "Resolvido! 🎉" : "Fim de jogo"}</h2>
       {result.solved && (
         <dl className="result-stats">

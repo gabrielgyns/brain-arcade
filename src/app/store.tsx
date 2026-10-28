@@ -3,7 +3,11 @@ import type { Locale, PlayResult } from "../domain/shared/types";
 import { EMPTY_PROGRESS, recordResult, type PlayerProgress } from "../domain/progress/progress";
 import { readJson, writeJson } from "../infra/storage";
 
+/** "system" follows the OS; the other two are an explicit player choice. */
+export type ThemePreference = "system" | "light" | "dark";
+
 export interface Settings {
+  theme: ThemePreference;
   locale: Locale;
   showTimer: boolean;
   highlightErrors: boolean;
@@ -14,7 +18,7 @@ function detectLocale(): Locale {
   return typeof navigator !== "undefined" && navigator.language?.toLowerCase() === "pt-pt" ? "pt-PT" : "pt-BR";
 }
 
-const DEFAULT_SETTINGS: Settings = { locale: detectLocale(), showTimer: true, highlightErrors: true, playerName: "" };
+const DEFAULT_SETTINGS: Settings = { theme: "system", locale: detectLocale(), showTimer: true, highlightErrors: true, playerName: "" };
 
 interface AppState {
   settings: Settings;
@@ -36,6 +40,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = settings.locale;
   }, [settings.locale]);
 
+  useEffect(() => applyTheme(settings.theme), [settings.theme]);
+
   const updateSettings = useCallback((patch: Partial<Settings>) => setSettings((s) => ({ ...s, ...patch })), []);
   const addResult = useCallback((r: PlayResult) => setProgress((p) => recordResult(p, r)), []);
 
@@ -47,4 +53,11 @@ export function useApp(): AppState {
   const ctx = useContext(AppContext);
   if (!ctx) throw new Error("useApp outside AppProvider");
   return ctx;
+}
+
+/** Mirrors the inline script in index.html, which applies the theme before first paint. */
+function applyTheme(theme: ThemePreference) {
+  const root = document.documentElement;
+  if (theme === "system") root.removeAttribute("data-theme");
+  else root.setAttribute("data-theme", theme);
 }

@@ -19,7 +19,14 @@ export function HomePage() {
   return (
     <>
       <section className="hero">
-        <h1>Jogue cinco minutos. Volte amanhã.</h1>
+        <div className="hero-tiles" aria-hidden>
+          {["7", "A", "■", "?", "3", "Z"].map((t, i) => (
+            <span key={i} className={`tile tile-${i}`}>{t}</span>
+          ))}
+        </div>
+        <h1>
+          Jogue cinco minutos. <span className="highlight">Volte amanhã.</span>
+        </h1>
         <p>Sudoku, caça-palavras, nonogramas e enigmas — grátis, sem conta, no telemóvel ou no computador.</p>
         <div className="actions">
           <Link to="/diario" className="btn primary big">
@@ -33,7 +40,7 @@ export function HomePage() {
         <h2>Jogos</h2>
         <div className="card-grid">
           {GAME_IDS.map((g) => (
-            <Link key={g} to={`/jogos/${messages.games[g].slug}`} className="game-card">
+            <Link key={g} to={`/jogos/${messages.games[g].slug}`} className="game-card" data-game={g}>
               <span className="game-icon" aria-hidden>{GAME_ICONS[g]}</span>
               <strong>{messages.games[g].name}</strong>
               <span className="muted">{messages.games[g].tagline}</span>

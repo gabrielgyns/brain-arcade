@@ -7,6 +7,7 @@ import { useApp } from "../../app/store";
 import { messages } from "../../i18n/messages";
 import { track } from "../../infra/analytics";
 import { ResultPanel } from "./ResultPanel";
+import { GAME_ICONS } from "../games/registry";
 import { AdSlot } from "./AdSlot";
 import { dailyResult, specKey } from "../../domain/progress/progress";
 
@@ -57,10 +58,13 @@ export function GameShell({
   );
 
   return (
-    <div className="game-shell">
+    <div className="game-shell" data-game={spec.game}>
       <div className="game-header">
         <div>
-          <h1>{info.name}</h1>
+          <h1>
+            <span className="game-badge" aria-hidden>{GAME_ICONS[spec.game]}</span>
+            {info.name}
+          </h1>
           <p className="muted">
             {messages.difficulty[spec.difficulty]}
             {mode.kind === "daily" && " · Desafio do dia"}
@@ -74,7 +78,7 @@ export function GameShell({
           <p className="notice">
             {alreadyDone.solved ? `Já resolveu este desafio em ${formatDuration(alreadyDone.timeMs)}.` : "Já jogou este desafio hoje."} Volte amanhã para um novo!
           </p>
-          <ResultPanel result={alreadyDone} mode={mode} onPlayAgain={onPlayAgain} />
+          <ResultPanel result={alreadyDone} mode={mode} onPlayAgain={onPlayAgain} celebrate={false} />
         </>
       ) : (
         <>

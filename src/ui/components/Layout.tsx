@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useApp } from "../../app/store";
 import { track } from "../../infra/analytics";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Layout() {
   const location = useLocation();
@@ -25,6 +26,7 @@ export function Layout() {
           <NavLink to="/revista">Revista</NavLink>
           <NavLink to="/estatisticas">Progresso</NavLink>
         </nav>
+        <ThemeToggle />
       </header>
       <main className="site-main">
         <Outlet />

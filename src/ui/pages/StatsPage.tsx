@@ -70,6 +70,16 @@ export function StatsPage() {
 
       <h2>Preferências</h2>
       <div className="prefs">
+        <div className="pref-row">
+          <span>Tema</span>
+          <div className="segmented" role="radiogroup" aria-label="Tema">
+            {([["system", "🌗 Automático"], ["light", "☀️ Claro"], ["dark", "🌙 Escuro"]] as const).map(([value, label]) => (
+              <button key={value} role="radio" aria-checked={settings.theme === value} className={settings.theme === value ? "active" : ""} onClick={() => updateSettings({ theme: value })}>
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
         <label><input type="checkbox" checked={settings.showTimer} onChange={(e) => updateSettings({ showTimer: e.target.checked })} /> Mostrar cronómetro</label>
         <label><input type="checkbox" checked={settings.highlightErrors} onChange={(e) => updateSettings({ highlightErrors: e.target.checked })} /> Assinalar erros</label>
       </div>
